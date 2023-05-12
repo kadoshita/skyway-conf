@@ -22,6 +22,7 @@ export const initPeer = (forceTurn: boolean): Promise<Peer> => {
 export const getPeerConnectionFromSfuRoom = (
   room: SfuRoom
 ): RTCPeerConnection => {
+  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
   // @ts-ignore: to get private refs
   return room._negotiator._pc;
 };

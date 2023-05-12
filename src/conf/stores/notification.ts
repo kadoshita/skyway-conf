@@ -1,4 +1,4 @@
-import { decorate, observable, action } from "mobx";
+import { observable, action, makeObservable } from "mobx";
 import { IObservableArray } from "mobx";
 import { NotificationItem, NotificationType } from "../utils/types";
 
@@ -6,6 +6,17 @@ class NotificationStore {
   items: IObservableArray<NotificationItem>;
 
   constructor() {
+    makeObservable<NotificationStore, "show">(this, {
+      items: observable.shallow,
+      showInfo: action,
+      showChat: action,
+      showReaction: action,
+      showJoin: action,
+      showLeave: action,
+      show: action,
+    });
+
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     // @ts-ignore: to type IObservableArray
     this.items = [];
   }
@@ -36,16 +47,5 @@ class NotificationStore {
     setTimeout(() => this.items.remove(item), duration);
   }
 }
-
-// @ts-ignore: to use private accessor
-decorate(NotificationStore, {
-  items: observable.shallow,
-  showInfo: action,
-  showChat: action,
-  showReaction: action,
-  showJoin: action,
-  showLeave: action,
-  show: action,
-});
 
 export default NotificationStore;

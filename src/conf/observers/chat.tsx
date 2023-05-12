@@ -1,5 +1,5 @@
 import * as React from "react";
-import { useContext, useCallback } from "react";
+import { useContext, useMemo } from "react";
 import { FunctionComponent } from "react";
 import { Observer } from "mobx-react";
 import { StoreContext } from "../contexts";
@@ -7,10 +7,10 @@ import { IconButton } from "../components/icon";
 import ChatLayout from "../components/chat-layout";
 import { openChat, closeChat, sendChat } from "../effects/chat";
 
-export const ChatOpener: FunctionComponent<{}> = () => {
+export const ChatOpener: FunctionComponent<{ key: string }> = () => {
   const store = useContext(StoreContext);
 
-  const onClickOpenChat = useCallback(openChat(store), [store]);
+  const onClickOpenChat = useMemo(() => openChat(store), [store]);
 
   return (
     <Observer>
@@ -19,11 +19,11 @@ export const ChatOpener: FunctionComponent<{}> = () => {
   );
 };
 
-export const Chat: FunctionComponent<{}> = () => {
+export const Chat: FunctionComponent<Record<string, never>> = () => {
   const store = useContext(StoreContext);
 
-  const onClickCloseChat = useCallback(closeChat(store), [store]);
-  const onClickSendChat = useCallback(sendChat(store), [store]);
+  const onClickCloseChat = useMemo(() => closeChat(store), [store]);
+  const onClickSendChat = useMemo(() => sendChat(store), [store]);
 
   const { ui, room } = store;
   return (

@@ -1,5 +1,5 @@
 import * as React from "react";
-import { useContext, useCallback } from "react";
+import { useContext, useMemo } from "react";
 import { FunctionComponent } from "react";
 import { Observer } from "mobx-react";
 import { StoreContext } from "../contexts";
@@ -18,28 +18,41 @@ import {
   toggleAudioMuted,
 } from "../effects/settings";
 
-const Settings: FunctionComponent<{}> = () => {
+const Settings: FunctionComponent<Record<string, never>> = () => {
   const store = useContext(StoreContext);
 
-  const onChangeDispName = useCallback(changeDispName(store), [store]);
-  const onClickEnableUserVideo = useCallback(enableUserVideo(store), [store]);
-  const onClickDisableUserVideo = useCallback(disableUserVideo(store), [store]);
-  const onClickEnableDisplayVideo = useCallback(enableDisplayVideo(store), [
-    store,
-  ]);
-  const onClickDisableDisplayVideo = useCallback(disableDisplayVideo(store), [
-    store,
-  ]);
-  const onChangeVideoDeviceId = useCallback(changeVideoDeviceId(store), [
-    store,
-  ]);
-  const onChangeAudioDeviceId = useCallback(changeAudioDeviceId(store), [
-    store,
-  ]);
-  const onClickJoinConference = useCallback(joinConference(store), [store]);
-  const onClickCloseSettings = useCallback(closeSettings(store), [store]);
-  const onClickToggleAudioMuted = useCallback(toggleAudioMuted(store), [store]);
-  const onClickToggleVideoMuted = useCallback(toggleVideoMuted(store), [store]);
+  const onChangeDispName = useMemo(() => changeDispName(store), [store]);
+  const onClickEnableUserVideo = useMemo(() => enableUserVideo(store), [store]);
+  const onClickDisableUserVideo = useMemo(
+    () => disableUserVideo(store),
+    [store]
+  );
+  const onClickEnableDisplayVideo = useMemo(
+    () => enableDisplayVideo(store),
+    [store]
+  );
+  const onClickDisableDisplayVideo = useMemo(
+    () => disableDisplayVideo(store),
+    [store]
+  );
+  const onChangeVideoDeviceId = useMemo(
+    () => changeVideoDeviceId(store),
+    [store]
+  );
+  const onChangeAudioDeviceId = useMemo(
+    () => changeAudioDeviceId(store),
+    [store]
+  );
+  const onClickJoinConference = useMemo(() => joinConference(store), [store]);
+  const onClickCloseSettings = useMemo(() => closeSettings(store), [store]);
+  const onClickToggleAudioMuted = useMemo(
+    () => toggleAudioMuted(store),
+    [store]
+  );
+  const onClickToggleVideoMuted = useMemo(
+    () => toggleVideoMuted(store),
+    [store]
+  );
 
   const { ui, media, room, client } = store;
   return (

@@ -186,7 +186,7 @@ export const joinRoom = (store: RootStore) => {
       confRoom.removeAllListeners();
       room.cleanUp();
     } catch (err) {
-      throw ui.showError(err);
+      throw ui.showError(err as Error);
     }
 
     // re-enter the same room automatically but with delay to ensure leave -> join

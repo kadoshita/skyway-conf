@@ -1,4 +1,4 @@
-import { decorate, observable, computed, action } from "mobx";
+import { observable, computed, action, makeObservable } from "mobx";
 import { parse } from "bowser";
 import { Parser } from "bowser";
 import { ClientInit, ClientBrowser } from "../utils/types";
@@ -11,6 +11,18 @@ class ClientStore {
   private parsedBrowser: Parser.ParsedResult | null;
 
   constructor() {
+    makeObservable<ClientStore, "parsedBrowser">(this, {
+      hasGetDisplayMedia: observable,
+      hasUserVideoDevice: observable,
+      isReady: observable,
+      displayName: observable,
+      parsedBrowser: observable.ref,
+      isDisplayNameValid: computed,
+      stat: computed,
+      browser: computed,
+      load: action,
+    });
+
     this.hasGetDisplayMedia = false;
     this.hasUserVideoDevice = false;
     this.isReady = false;
@@ -53,17 +65,5 @@ class ClientStore {
     this.parsedBrowser = parse(ua);
   }
 }
-// @ts-ignore: to use private accessor
-decorate(ClientStore, {
-  hasGetDisplayMedia: observable,
-  hasUserVideoDevice: observable,
-  isReady: observable,
-  displayName: observable,
-  parsedBrowser: observable.ref,
-  isDisplayNameValid: computed,
-  stat: computed,
-  browser: computed,
-  load: action,
-});
 
 export default ClientStore;

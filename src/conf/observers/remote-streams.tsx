@@ -1,15 +1,15 @@
 import * as React from "react";
-import { useContext, useCallback } from "react";
+import { useContext, useMemo } from "react";
 import { FunctionComponent } from "react";
 import { Observer } from "mobx-react";
 import { StoreContext } from "../contexts";
 import { setPinned } from "../effects/remote-streams";
 import RemoteStreamsLayout from "../components/remote-streams-layout";
 
-const RemoteStreams: FunctionComponent<{}> = () => {
+const RemoteStreams: FunctionComponent<Record<string, never>> = () => {
   const store = useContext(StoreContext);
 
-  const onClickSetPinned = useCallback(setPinned(store), [store]);
+  const onClickSetPinned = useMemo(() => setPinned(store), [store]);
 
   const { room } = store;
   return (

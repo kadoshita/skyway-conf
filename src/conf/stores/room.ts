@@ -1,4 +1,4 @@
-import { decorate, observable, computed, action } from "mobx";
+import { observable, computed, action, makeObservable } from "mobx";
 import { IObservableArray } from "mobx";
 import Peer, { RoomStream, SfuRoom, MeshRoom } from "skyway-js";
 import { RoomInit, RoomStat, RoomChat, RoomReaction } from "../utils/types";
@@ -21,6 +21,31 @@ class RoomStore {
   rtcStats: RTCStatsReport | null;
 
   constructor() {
+    makeObservable<RoomStore>(this, {
+      peer: observable.ref,
+      isReady: observable,
+      room: observable.ref,
+      mode: observable,
+      id: observable,
+      streams: observable.shallow,
+      stats: observable.shallow,
+      chats: observable.shallow,
+      myLastChat: observable.ref,
+      myLastReaction: observable.ref,
+      pinnedId: observable,
+      castRequestCount: observable,
+      rtcStats: observable.ref,
+      name: computed,
+      isJoined: computed,
+      pinnedStream: computed,
+      load: action,
+      addLocalChat: action,
+      addRemoteChat: action,
+      removeStream: action,
+      getPeerConnection: action,
+      cleanUp: action,
+    });
+
     // Peer instance
     this.peer = null;
     this.isReady = false;
@@ -33,6 +58,7 @@ class RoomStore {
 
     this.streams = new Map();
     this.stats = new Map();
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     // @ts-ignore: to type IObservableArray
     this.chats = [];
     this.myLastChat = null;
@@ -122,29 +148,5 @@ class RoomStore {
     this.room = null;
   }
 }
-decorate(RoomStore, {
-  peer: observable.ref,
-  isReady: observable,
-  room: observable.ref,
-  mode: observable,
-  id: observable,
-  streams: observable.shallow,
-  stats: observable.shallow,
-  chats: observable.shallow,
-  myLastChat: observable.ref,
-  myLastReaction: observable.ref,
-  pinnedId: observable,
-  castRequestCount: observable,
-  rtcStats: observable.ref,
-  name: computed,
-  isJoined: computed,
-  pinnedStream: computed,
-  load: action,
-  addLocalChat: action,
-  addRemoteChat: action,
-  removeStream: action,
-  getPeerConnection: action,
-  cleanUp: action,
-});
 
 export default RoomStore;

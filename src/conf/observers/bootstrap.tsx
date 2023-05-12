@@ -18,9 +18,13 @@ interface Props {
 const Bootstrap: FunctionComponent<Props> = ({ children }: Props) => {
   const store = useContext(StoreContext);
 
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   useEffect(checkRoomSetting(store), [store]);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   useEffect(initAudioDeviceAndClient(store), [store]);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   useEffect(listenStoreChanges(store), [store]);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   useEffect(listenGlobalEvents(store), [store]);
 
   const { ui, client, room, media } = store;

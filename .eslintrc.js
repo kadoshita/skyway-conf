@@ -20,8 +20,7 @@ module.exports = {
     "plugin:@typescript-eslint/recommended",
     "plugin:react/recommended",
     "plugin:prettier/recommended",
-    "prettier/@typescript-eslint",
-    "prettier/react",
+    "prettier",
   ],
   rules: {
     "no-console": "off",
@@ -45,5 +44,6 @@ module.exports = {
     "react/prop-types": "off",
     "react-hooks/rules-of-hooks": "error",
     "react-hooks/exhaustive-deps": "error",
+    "react/no-unknown-property": ["error", { ignore: ["css"] }],
   },
 };

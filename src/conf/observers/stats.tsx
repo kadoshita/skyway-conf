@@ -1,5 +1,5 @@
 import * as React from "react";
-import { useContext, useCallback } from "react";
+import { useContext, useMemo } from "react";
 import { FunctionComponent } from "react";
 import { Observer } from "mobx-react";
 import { StoreContext } from "../contexts";
@@ -7,10 +7,10 @@ import { IconButton } from "../components/icon";
 import StatsLayout from "../components/stats-layout";
 import { openStats, closeStats } from "../effects/stats";
 
-export const StatsOpener: FunctionComponent<{}> = () => {
+export const StatsOpener: FunctionComponent<{ key: string }> = () => {
   const store = useContext(StoreContext);
 
-  const onClickOpenStats = useCallback(openStats(store), [store]);
+  const onClickOpenStats = useMemo(() => openStats(store), [store]);
 
   return (
     <Observer>
@@ -19,10 +19,10 @@ export const StatsOpener: FunctionComponent<{}> = () => {
   );
 };
 
-export const Stats: FunctionComponent<{}> = () => {
+export const Stats: FunctionComponent<Record<string, never>> = () => {
   const store = useContext(StoreContext);
 
-  const onClickCloseStats = useCallback(closeStats(store), [store]);
+  const onClickCloseStats = useMemo(() => closeStats(store), [store]);
 
   const { ui, room } = store;
   return (

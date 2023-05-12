@@ -1,4 +1,4 @@
-import { decorate, observable, computed, action } from "mobx";
+import { observable, computed, action, makeObservable } from "mobx";
 import { IObservableArray } from "mobx";
 import { UserDevices, VideoType } from "../utils/types";
 
@@ -14,8 +14,33 @@ class MediaStore {
   private videoTrack: MediaStreamTrack | null;
 
   constructor() {
+    makeObservable<MediaStore, "audioTrack" | "videoTrack">(this, {
+      audioInDevices: observable.shallow,
+      videoInDevices: observable.shallow,
+      audioDeviceId: observable,
+      videoDeviceId: observable,
+      isAudioTrackMuted: observable,
+      isVideoTrackMuted: observable,
+      videoType: observable,
+      audioTrack: observable.ref,
+      videoTrack: observable.ref,
+      stat: computed,
+      isAudioEnabled: computed,
+      stream: computed,
+      setAudioTrack: action,
+      setVideoTrack: action,
+      releaseAudioDevice: action,
+      releaseVideoDevice: action,
+      deleteVideoTrack: action,
+      setAudioDevices: action,
+      setVideoDevices: action,
+      toggleMuted: action,
+    });
+
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     // @ts-ignore: to type IObservableArray
     this.audioInDevices = [];
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     // @ts-ignore: to type IObservableArray
     this.videoInDevices = [];
     this.audioDeviceId = null;
@@ -108,29 +133,5 @@ class MediaStore {
     }
   }
 }
-
-// @ts-ignore: to use private accessor
-decorate(MediaStore, {
-  audioInDevices: observable.shallow,
-  videoInDevices: observable.shallow,
-  audioDeviceId: observable,
-  videoDeviceId: observable,
-  isAudioTrackMuted: observable,
-  isVideoTrackMuted: observable,
-  videoType: observable,
-  audioTrack: observable.ref,
-  videoTrack: observable.ref,
-  stat: computed,
-  isAudioEnabled: computed,
-  stream: computed,
-  setAudioTrack: action,
-  setVideoTrack: action,
-  releaseAudioDevice: action,
-  releaseVideoDevice: action,
-  deleteVideoTrack: action,
-  setAudioDevices: action,
-  setVideoDevices: action,
-  toggleMuted: action,
-});
 
 export default MediaStore;
